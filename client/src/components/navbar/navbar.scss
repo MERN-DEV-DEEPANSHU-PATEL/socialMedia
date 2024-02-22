@@ -1,0 +1,74 @@
+@import "../../style.scss";
+
+.navbar {
+  @include themify($themes) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    height: 50px;
+    border-bottom: 1px solid themed("border");
+    position: sticky;
+    top: 0;
+    background-color: themed("bg");
+    color: themed("textColor");
+    z-index: 999;
+
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+
+      span {
+        font-weight: bold;
+        font-size: 20px;
+        color: themed("logo");
+      }
+
+      .search {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid themed("border");
+        border-radius: 5px;
+        button {
+          height: 100%;
+        }
+        input {
+          border: none;
+          width: 500px;
+          background-color: transparent;
+          color: themed("textColor");
+          &:focus {
+            outline: none;
+            border: none;
+          }
+          @include mobile {
+            display: none;
+          }
+
+          @include tablet {
+            width: 200px;
+          }
+        }
+      }
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      @include mobile {
+        display: none;
+      }
+
+      .logout {
+        background-color: transparent;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+    }
+  }
+}
