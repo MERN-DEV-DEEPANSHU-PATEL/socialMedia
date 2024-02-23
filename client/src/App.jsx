@@ -12,6 +12,8 @@ import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/authContext";
 import Friends from "./components/friends/Friends";
 import { ToastContainer } from "react-toastify";
+import Followers from "./pages/followers/Followers";
+import Following from "./pages/followers/Following";
 function App() {
   const { currentUser } = useContext(AuthContext);
 
@@ -45,6 +47,9 @@ function App() {
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/followers" element={<Followers />} />
+      <Route path="/following" element={<Following />} />
+      <Route path="*" element={<h1>404 page not found</h1>} />
     </Routes>
   );
 }

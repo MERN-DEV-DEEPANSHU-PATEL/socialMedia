@@ -9,6 +9,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
+import ProfilePic from "../../assets/profilePic.png";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useLocation, useParams } from "react-router-dom";
 import { useContext } from "react";
@@ -36,15 +37,15 @@ const Profile = () => {
         console.error(error);
       })
   );
-  console.log("data");
-  console.log(isLoading);
-  console.log(data);
 
   const { isLoading: rIsLoading, data: relationshipData } = useQuery(
     ["relationship"],
     () =>
       makeRequest
-        .get("/relationships?followedUsername=" + username)
+        .get(
+          "/relationships/following/onlyusername?followerUsername=" +
+            currentUser.username
+        )
         .then((res) => {
           return res.data;
         })
@@ -67,7 +68,7 @@ const Profile = () => {
   );
 
   const handleFollow = () => {
-    mutation.mutate(relationshipData.includes(currentUser.id));
+    mutation.mutate(relationshipData.includes(currentUser.username));
   };
   const urlCoverPic = data?.coverPic ? data.coverPic : "";
   const urlProfilePic = data?.profilePic ? data.profilePic : "";
@@ -80,9 +81,13 @@ const Profile = () => {
       ) : (
         <>
           <div className="images">
-            <img src={"/upload/" + urlCoverPic} alt="" className="cover" />
             <img
-              src={"/upload/" + urlProfilePic}
+              src={urlCoverPic ? "/upload/" + urlCoverPic : "/sf.png"}
+              alt=""
+              className="cover"
+            />
+            <img
+              src={urlProfilePic ? "/upload/" + urlProfilePic : ProfilePic}
               alt=""
               className="profilePic"
             />

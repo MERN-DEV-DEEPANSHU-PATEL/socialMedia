@@ -16,6 +16,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 
 import { db } from "./connect.js";
+import { getSuggestions } from "./controllers/suggestions.js";
 
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
@@ -94,7 +95,8 @@ app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/stories", storiesRoutes);
 app.use("/api/relationships", relationshipRoutes);
-
+app.get("/api/suggestions", getSuggestions);
+// app.get("/test", getRelationshipsWithData);
 // To Check DataBase is connected or not
 db.connect((err) => {
   if (err) {

@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./update.scss";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import useMakeRequest from "../../hook/useFetch";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../context/authContext";
 
 const Update = ({ setOpenUpdate, user }) => {
   const [cover, setCover] = useState(null);
+  const { setCurrentUser } = useContext(AuthContext);
   const [profile, setProfile] = useState(null);
   const makeRequest = useMakeRequest();
   console.log("user", user);
@@ -37,7 +40,15 @@ const Update = ({ setOpenUpdate, user }) => {
 
   const mutation = useMutation(
     (user) => {
-      return makeRequest.put("/users", user);
+      return makeRequest.put("/users", user).then((res) =>
+        res.status === 200
+          ? setCurrentUser((prev) => {
+              console.log("...prev", prev);
+              console.log("user", user);
+              return { ...prev, ...user };
+            })
+          : ""
+      );
     },
     {
       onSuccess: () => {
@@ -50,17 +61,20 @@ const Update = ({ setOpenUpdate, user }) => {
   const handleClick = async (e) => {
     e.preventDefault();
 
-    //TODO: find a better way to get image URL
+    try {
+      let coverUrl;
+      let profileUrl;
+      coverUrl = cover ? await upload(cover) : user.coverPic;
+      profileUrl = profile ? await upload(profile) : user.profilePic;
 
-    let coverUrl;
-    let profileUrl;
-    coverUrl = cover ? await upload(cover) : user.coverPic;
-    profileUrl = profile ? await upload(profile) : user.profilePic;
-
-    mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl });
-    setOpenUpdate(false);
-    setCover(null);
-    setProfile(null);
+      mutation.mutate({ ...texts, coverPic: coverUrl, profilePic: profileUrl });
+      setOpenUpdate(false);
+      setCover(null);
+      setProfile(null);
+    } catch (error) {
+      console.log("error while update profile", error);
+      toast.error("error while update profile");
+    }
   };
   return (
     <div className="update">

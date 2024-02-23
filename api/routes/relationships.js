@@ -1,11 +1,20 @@
 import express from "express";
-import { getRelationships, addRelationship, deleteRelationship } from "../controllers/relationship.js";
+import {
+  getFollowersOnlyUsername,
+  follow,
+  unFollow,
+  getFollowersWithData,
+  getFollowingOnlyUsername,
+  getFollowingWithData,
+} from "../controllers/relationship.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/", getRelationships)
-router.post("/", addRelationship)
-router.delete("/", deleteRelationship)
+router.get("/followers/onlyusername", getFollowersOnlyUsername);
+router.get("/following/onlyusername", getFollowingOnlyUsername);
+router.get("/following/withdata", getFollowingWithData);
+router.get("/followers/withdata", getFollowersWithData);
+router.post("/", follow);
+router.delete("/", unFollow);
 
-
-export default router
+export default router;

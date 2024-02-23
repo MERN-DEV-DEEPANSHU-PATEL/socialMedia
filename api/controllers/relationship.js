@@ -1,7 +1,37 @@
 import { db } from "../connect.js";
 import jwt from "jsonwebtoken";
 
-export const getRelationships = (req, res) => {
+export const getFollowersWithData = (req, res) => {
+  const q =
+    "SELECT r.followerUsername, u.name ,u.profilePic " +
+    "FROM relationships r " +
+    "JOIN users u ON r.followerUsername = u.username " +
+    "WHERE r.followedUsername = ?";
+
+  db.query(q, [req.query.followedUsername], (err, results) => {
+    if (err) {
+      console.error("Error fetching relationships:", err);
+      return res.status(500).json(err);
+    }
+    return res.status(200).json(results);
+  });
+};
+export const getFollowingWithData = (req, res) => {
+  const q =
+    "SELECT r.followedUsername, u.name ,u.profilePic " +
+    "FROM relationships r " +
+    "JOIN users u ON r.followedUsername = u.username " +
+    "WHERE r.followerUsername = ?";
+
+  db.query(q, [req.query.followerUsername], (err, results) => {
+    if (err) {
+      console.error("Error fetching relationships:", err);
+      return res.status(500).json(err);
+    }
+    return res.status(200).json(results);
+  });
+};
+export const getFollowersOnlyUsername = (req, res) => {
   const q =
     "SELECT followerUsername FROM relationships WHERE followedUsername = ?";
 
@@ -15,8 +45,22 @@ export const getRelationships = (req, res) => {
       .json(results.map((relationship) => relationship.followerUsername));
   });
 };
+export const getFollowingOnlyUsername = (req, res) => {
+  const q =
+    "SELECT followedUsername FROM relationships WHERE followerUsername = ?";
 
-export const addRelationship = (req, res) => {
+  db.query(q, [req.query.followerUsername], (err, results) => {
+    if (err) {
+      console.error("Error fetching relationships:", err);
+      return res.status(500).json(err);
+    }
+    return res
+      .status(200)
+      .json(results.map((relationship) => relationship.followedUsername));
+  });
+};
+
+export const follow = (req, res) => {
   const authHeaders = req.headers.authorization;
   const token = authHeaders.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");
@@ -38,7 +82,7 @@ export const addRelationship = (req, res) => {
   });
 };
 
-export const deleteRelationship = (req, res) => {
+export const unFollow = (req, res) => {
   const authHeaders = req.headers.authorization;
   const token = authHeaders.split(" ")[1];
   if (!token) return res.status(401).json("Not logged in!");

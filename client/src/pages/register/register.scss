@@ -1,84 +1,93 @@
 @import "../../mixins.scss";
-.register {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.main-container {
+  width: 100vw;
   height: 100vh;
-  background-size: contain;
-  background-image: linear-gradient(to bottom right, #4e6bff, #8a2be2);
-  font-family: sans-serif;
-  @include lg {
-    background-image: url("pexels-ron-lach-9786314.jpg");
+  .video {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
   }
 
-  .opacity {
-    background-color: rgba(212, 205, 205, 0.308);
-    @include lg {
-      background-color: rgba(212, 205, 205, 0.608);
-    }
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  .register {
+    transform: scale(1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    font-family: sans-serif;
 
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+    .opacity {
+      background-color: rgba(212, 205, 205, 0.308);
+      @include lg {
+        background-color: rgba(212, 205, 205, 0.608);
+      }
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
-    form {
-      display: flex;
-      flex-direction: column;
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
 
-      .form-group {
+      form {
         display: flex;
-        align-items: center;
-        margin-bottom: 20px;
+        flex-direction: column;
 
-        svg {
-          font-size: 1.2rem;
-          margin-right: 10px;
+        .form-group {
+          display: flex;
+          align-items: center;
+          margin-bottom: 20px;
+
+          svg {
+            font-size: 1.2rem;
+            margin-right: 10px;
+          }
+
+          input {
+            padding: 10px;
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid black;
+            font-size: 1rem;
+            outline: none;
+
+            &:focus {
+              border-color: #007bff;
+            }
+          }
         }
 
-        input {
-          padding: 10px;
-          background-color: transparent;
-          border: none;
-          border-bottom: 1px solid black;
-          font-size: 1rem;
-          outline: none;
+        .error {
+          color: red;
+          margin-bottom: 20px;
+        }
 
-          &:focus {
-            border-color: #007bff;
+        button {
+          padding: 10px;
+          border: none;
+          border-radius: 5px;
+          background-color: #007bff;
+          color: white;
+          font-size: 1rem;
+          cursor: pointer;
+          margin-bottom: 1rem;
+          &:hover {
+            background-color: #0056b3;
           }
         }
       }
-
-      .error {
-        color: red;
-        margin-bottom: 20px;
-      }
-
-      button {
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
-        margin-bottom: 1rem;
-        &:hover {
-          background-color: #0056b3;
+      .is-user {
+        font-size: 1.2rem;
+        color: rgb(24, 21, 21);
+        a {
+          text-decoration: none;
+          font-weight: bold;
+          color: black;
         }
-      }
-    }
-    .is-user {
-      font-size: 1.2rem;
-      color: rgb(24, 21, 21);
-      a {
-        text-decoration: none;
-        font-weight: bold;
-        color: black;
       }
     }
   }

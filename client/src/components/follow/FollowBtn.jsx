@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useContext, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../context/authContext";
 import useMakeRequest from "../../hook/useFetch";
 
-const FollowBtn = ({ username, relationshipData, isSearch = false }) => {
+const FollowBtn = ({ relationshipData, username }) => {
   const queryClient = useQueryClient();
   const { currentUser } = useContext(AuthContext);
   const makeRequest = useMakeRequest();
+  const [action, setAction] = useState(false);
   const mutation = useMutation(
     (following) => {
       if (following)
@@ -17,27 +18,31 @@ const FollowBtn = ({ username, relationshipData, isSearch = false }) => {
       onSuccess: () => {
         // Invalidate and refetch
         queryClient.invalidateQueries(["relationship"]);
+        setAction(false);
       },
     }
   );
-
   console.log(relationshipData);
   console.log(username);
   console.log(relationshipData.includes(username));
-  const followerId = !isSearch ? currentUser.username : username;
+
   const handleFollow = (e) => {
     e.stopPropagation();
     e.preventDefault();
-    mutation.mutate(relationshipData.includes(followerId));
+    mutation.mutate(relationshipData.includes(username));
+    setAction(true);
   };
 
   return (
     <button
       onClick={handleFollow}
-      disabled={isSearch}
-      style={{ cursor: isSearch ? "not-allowed" : "pointer" }}
+      disabled={action}
+      style={{
+        cursor: action ? "not-allowed" : "pointer",
+        backgroundColor: "#5271ff",
+      }}
     >
-      {relationshipData.includes(followerId) ? "Following" : "Follow"}
+      {relationshipData.includes(username) ? "Following" : "Follow"}
     </button>
   );
 };

@@ -34,6 +34,7 @@ const Login = () => {
   return (
     <div>
       <video
+        className="video"
         style={{
           position: "absolute",
           height: "100vh",

@@ -69,7 +69,8 @@ export const updateUser = (req, res) => {
         return res.status(500).json(err);
       }
       if (data.affectedRows > 0) {
-        return res.json("Update Successful!");
+        console.log(data);
+        return res.status(200).json("Update Successful!");
       }
       return res.status(403).json("You can update only your profile!");
     });

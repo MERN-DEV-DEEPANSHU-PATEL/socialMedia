@@ -33,13 +33,15 @@ const Register = () => {
         inputs
       );
       toast.success("Register Successful");
+      navigate("/login");
     } catch (err) {
       toast.error(err.response.data.msg);
     }
   };
 
   return (
-    <div>
+    <div className="main-container">
+      <video className="video" src="/smv.mp4" autoPlay autoFocus></video>
       <div className="register">
         <div className="opacity">
           <Logo h={"150"} />
