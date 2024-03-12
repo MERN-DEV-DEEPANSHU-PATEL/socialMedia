@@ -1,74 +1,81 @@
 @import "../../style.scss";
 
 .stories {
-  display: flex;
-  gap: 10px;
-  height: 250px;
-  margin-bottom: 30px;
-
-  @include mobile {
-    height: 50px;
-    margin-bottom: 0;
-    justify-content: space-between;
-  }
-
-  @include tablet {
-    height: 150px;
-    gap: 20px;
-  }
-
-  .story {
-    flex: 1;
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-
-    @include mobile {
-      flex: none;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    span {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      color: white;
-      font-weight: 500;
-      @include mobile {
+  @include themify($themes) {
+    .slider {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      width: 40vw;
+      overflow-x: scroll;
+      &::-webkit-scrollbar {
         display: none;
       }
-    }
-
-    label {
-      position: absolute;
-      bottom: 40px;
-      left: 10px;
-      color: white;
-      background-color: #5271ff;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      font-size: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
       @include mobile {
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
+        justify-content: space-between;
+      }
+
+      @include tablet {
+        gap: 20px;
+      }
+
+      .uploadIcon {
+        position: absolute;
+        top: 40%;
+        right: 10px;
+        color: white;
+        background-color: #5271ff;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        font-size: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .story {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        cursor: pointer;
+        img {
+          width: 60px;
+          height: 60px;
+          border: 2px solid;
+          border-color: rgba(253, 128, 128, 0.5);
+          border-radius: 50%;
+          border-image-slice: 50%;
+          animation: rainbow-animation 10s linear infinite;
+          object-fit: cover;
+        }
+        span {
+          color: themed("textColor");
+          font-weight: 500;
+          font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+            "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        }
       }
     }
+  }
+}
+@keyframes rainbow-animation {
+  20% {
+    border-color: rgba(255, 0, 0, 0.548);
+  }
+  40% {
+    border-color: orange;
+  }
+  60% {
+    border-color: yellow;
+  }
+  80% {
+    border-color: green;
+  }
+  100% {
+    border-color: rgb(59, 161, 187);
   }
 }

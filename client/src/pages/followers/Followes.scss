@@ -1,12 +1,10 @@
 .f-main-container {
   display: flex;
-  .leftbar {
-    flex: 2;
-  }
+  height: 100%;
 
   .list-container {
-    height: 100vh;
-    overflow: scroll;
+    // height: 100vh;
+    overflow-y: scroll;
     position: relative;
     flex: 4;
     .serach-in-follower {
@@ -39,7 +37,7 @@
       }
     }
     .list {
-      height: 200vh;
+      // height: 200vh;
       &-item {
         .user {
           display: flex;

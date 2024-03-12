@@ -19,7 +19,7 @@ const Posts = () => {
         ? "Something went wrong!"
         : isLoading
         ? "loading"
-        : data.map((post) => <Post post={post} key={post.ID} />)}
+        : data.map((post, index) => <Post post={post} key={index} />)}
     </div>
   );
 };

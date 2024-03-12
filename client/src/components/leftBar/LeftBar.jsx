@@ -2,20 +2,18 @@ import "./leftBar.scss";
 import Friends from "../../assets/1.png";
 import Groups from "../../assets/2.png";
 import SearchImg from "../../assets/search.png";
-import Events from "../../assets/6.png";
-import Gaming from "../../assets/7.png";
 import Gallery from "../../assets/8.png";
-import Videos from "../../assets/9.png";
-import Messages from "../../assets/10.png";
-import Tutorials from "../../assets/11.png";
-import Courses from "../../assets/12.png";
-import Fund from "../../assets/13.png";
 import { AuthContext } from "../../context/authContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { DarkModeContext } from "../../context/darkModeContext";
 
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
 const LeftBar = ({ className }) => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, setCurrentUser } = useContext(AuthContext);
+  const { darkMode, toggle } = useContext(DarkModeContext);
+
   return (
     <div className={`leftBar`}>
       <div className="container">
@@ -27,6 +25,12 @@ const LeftBar = ({ className }) => {
             >
               <img src={"/upload/" + currentUser.profilePic} alt="" />
               <span>{currentUser.name}</span>
+            </Link>
+          </div>
+          <div className="item">
+            <Link to={"/"} style={{ textDecoration: "none" }}>
+              <img src={"/home.jpeg"} alt="home" />
+              <span>Home</span>
             </Link>
           </div>
           <div className="item">
@@ -48,12 +52,33 @@ const LeftBar = ({ className }) => {
             </Link>
           </div>
           <div className="item">
-            <Link to={"/Search"} style={{ textDecoration: "none" }}>
+            <Link to={"/search"} style={{ textDecoration: "none" }}>
               <img src={SearchImg} alt="" />
               <span>Search user</span>
             </Link>
           </div>
+          <div className="item">
+            <Link
+              to={"/login"}
+              className="logout"
+              onClick={() => {
+                localStorage.setItem("user", null);
+                setCurrentUser(null);
+              }}
+              style={{ textDecoration: "none" }}
+            >
+              <img src={"lg.png"} alt="" />
+              <span>Logout</span>
+            </Link>
+          </div>
         </div>
+      </div>
+      <div style={{ position: "absolute", top: "10px", right: "10px" }}>
+        {darkMode ? (
+          <WbSunnyOutlinedIcon style={{ color: "white" }} onClick={toggle} />
+        ) : (
+          <DarkModeOutlinedIcon onClick={toggle} />
+        )}
       </div>
     </div>
   );

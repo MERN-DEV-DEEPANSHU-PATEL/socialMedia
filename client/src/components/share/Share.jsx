@@ -92,9 +92,9 @@ const Share = () => {
               <img src={Friend} alt="" />
               <span>Tag Friends</span>
             </div>
-          </div>
-          <div className="right">
-            <button onClick={handleClick}>Share</button>
+            <div className="item">
+              <button onClick={handleClick}>Share</button>
+            </div>
           </div>
         </div>
       </div>

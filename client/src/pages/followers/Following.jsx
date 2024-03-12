@@ -41,100 +41,95 @@ const Following = () => {
   );
 
   return (
-    <div className={`theme-${darkMode ? "dark" : "light"}`}>
-      <div className="f-main-container">
-        <LeftBar />
-        <div className="list-container">
-          <div className="serach-in-follower">
-            <label htmlFor="serachF">search user </label>
-            <input
-              type="text"
-              id="serachF"
-              name="serachF"
-              placeholder="enter name"
-              onChange={(e) => setSerachName(e.target.value)}
-            />
-          </div>
-          {r2IsLoading || rIsLoading ? (
-            <Spinner />
-          ) : (
-            <ul className="list">
-              {serachName ? (
-                followingData.filter((friend) =>
-                  friend.name.toLowerCase().includes(serachName.toLowerCase())
-                ).length === 0 ? (
-                  <h3>no such user</h3>
-                ) : (
-                  followingData
-                    .filter((friend) =>
-                      friend.name
-                        .toLowerCase()
-                        .includes(serachName.toLowerCase())
-                    )
-                    .map((friend) => {
-                      return (
-                        <li className="list-item">
-                          <div className="user">
-                            <div className="userInfo">
-                              <img
-                                src={
-                                  friend.profilePic
-                                    ? friend.profilePic
-                                    : profilePic
-                                }
-                                alt="Image"
-                              />
-                              <span className="name">{friend.name}</span>
-                              <span className="username">
-                                &#40;{friend.followedUsername}&#41;
-                              </span>
-                            </div>
-                            <div className="buttons">
-                              <FollowBtn
-                                relationshipData={relationshipData}
-                                username={friend.followedUsername}
-                              />
-                              <button>Watch Post</button>
-                            </div>
-                          </div>
-                        </li>
-                      );
-                    })
-                )
-              ) : (
-                followingData.map((friend) => {
-                  return (
-                    <li className="list-item">
-                      <div className="user">
-                        <div className="userInfo">
-                          <img
-                            src={
-                              friend.profilePic ? friend.profilePic : profilePic
-                            }
-                            alt="Image"
-                          />
-                          <span className="name">{friend.name}</span>
-                          <span className="username">
-                            &#40;{friend.followedUsername}&#41;
-                          </span>
-                        </div>
-                        <div className="buttons">
-                          <FollowBtn
-                            relationshipData={relationshipData}
-                            username={friend.followedUsername}
-                          />
-                          <button>Watch Post</button>
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })
-              )}
-            </ul>
-          )}
+    <div className="f-main-container">
+      <div className="list-container">
+        <div className="serach-in-follower">
+          <label htmlFor="serachF">search user </label>
+          <input
+            type="text"
+            id="serachF"
+            name="serachF"
+            placeholder="enter name"
+            onChange={(e) => setSerachName(e.target.value)}
+          />
         </div>
-        <div className="post-container">yha post dal denge</div>
+        {r2IsLoading || rIsLoading ? (
+          <Spinner />
+        ) : (
+          <ul className="list">
+            {serachName ? (
+              followingData.filter((friend) =>
+                friend.name.toLowerCase().includes(serachName.toLowerCase())
+              ).length === 0 ? (
+                <h3>no such user</h3>
+              ) : (
+                followingData
+                  .filter((friend) =>
+                    friend.name.toLowerCase().includes(serachName.toLowerCase())
+                  )
+                  .map((friend) => {
+                    return (
+                      <li className="list-item">
+                        <div className="user">
+                          <div className="userInfo">
+                            <img
+                              src={
+                                friend.profilePic
+                                  ? friend.profilePic
+                                  : profilePic
+                              }
+                              alt="Image"
+                            />
+                            <span className="name">{friend.name}</span>
+                            <span className="username">
+                              &#40;{friend.followedUsername}&#41;
+                            </span>
+                          </div>
+                          <div className="buttons">
+                            <FollowBtn
+                              relationshipData={relationshipData}
+                              username={friend.followedUsername}
+                            />
+                            <button>Watch Post</button>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })
+              )
+            ) : (
+              followingData.map((friend) => {
+                return (
+                  <li className="list-item">
+                    <div className="user">
+                      <div className="userInfo">
+                        <img
+                          src={
+                            friend.profilePic ? friend.profilePic : profilePic
+                          }
+                          alt="Image"
+                        />
+                        <span className="name">{friend.name}</span>
+                        <span className="username">
+                          &#40;{friend.followedUsername}&#41;
+                        </span>
+                      </div>
+                      <div className="buttons">
+                        <FollowBtn
+                          relationshipData={relationshipData}
+                          username={friend.followedUsername}
+                        />
+                        <button>Watch Post</button>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })
+            )}
+          </ul>
+        )}
       </div>
+      <div className="post-container">yha post dal denge</div>
     </div>
   );
 };

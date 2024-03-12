@@ -47,6 +47,11 @@ $themes: (
     @content;
   }
 }
+@mixin res($width) {
+  @media (max-width: $width) {
+    @content;
+  }
+}
 @mixin tablet {
   @media (max-width: 960px) {
     @content;
@@ -59,24 +64,20 @@ $themes: (
   box-sizing: border-box;
 }
 
-// html {
-//   font-size: 5px;
-//   @include ssm {
-//     font-size: 6px;
-//   }
-//   @include sm {
-//     font-size: 7px;
-//   }
-//   @include md {
-//     font-size: 8px;
-//   }
-//   @include lg {
-//     font-size: 12px;
-//   }
-//   @include xl {
-//     font-size: 11px;
-//   }
-//   @include xxl {
-//     font-size: 13px;
-//   }
-// }
+html {
+  background-color: #fff;
+}
+
+.toggle-sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  transition: all ease-in-out 0.3s;
+}
+.toggle-sidebar-close {
+  transform: translateX(-100%);
+}
+.toggle-sidebar-open {
+  transform: translateX(0);
+}

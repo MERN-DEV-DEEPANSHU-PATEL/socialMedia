@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import "./login.scss";
@@ -11,8 +11,6 @@ const Login = () => {
     username: "",
     password: "",
   });
-  const [err, setErr] = useState(null);
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -42,8 +40,9 @@ const Login = () => {
           zIndex: "-1",
         }}
         src="/smv.mp4"
-        autoPlay
-        autoFocus
+        autoPlay={true}
+        autoFocus={true}
+        loop={true}
       ></video>
 
       <div className="login">

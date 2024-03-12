@@ -10,16 +10,49 @@ export const getStories = (req, res) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("Token is not valid!");
 
-    const q = `SELECT s.*, name FROM stories AS s JOIN users AS u ON (u.username = s.username)
-    LEFT JOIN relationships AS r ON (s.username = r.followedUsername AND r.followerUsername= ?) LIMIT 4`;
+    const q = `
+      SELECT u.username, u.profilePic, s.media, s.createdAt
+      FROM users u
+      JOIN stories s ON u.username = s.username
+      WHERE u.username = ? OR u.username IN (
+        SELECT r.followedUsername
+        FROM relationships r
+        WHERE r.followerUsername = ?
+      )
+      ORDER BY u.username = ? DESC, s.createdAt DESC
+    `;
 
-    db.query(q, [userInfo.username], (err, results) => {
-      if (err) {
-        console.error("Error fetching stories:", err);
-        return res.status(500).json(err);
+    db.query(
+      q,
+      [userInfo.username, userInfo.username, userInfo.username],
+      (err, results) => {
+        if (err) {
+          console.error("Error fetching stories:", err);
+          return res.status(500).json(err);
+        }
+
+        // Grouping stories by username
+        const storiesByUser = results.reduce((acc, cur) => {
+          if (!acc[cur.username]) {
+            acc[cur.username] = {
+              username: cur.username,
+              profilePic: cur.profilePic,
+              activeStories: [],
+            };
+          }
+          acc[cur.username].activeStories.push({
+            media: cur.media,
+            createdAt: cur.createdAt,
+          });
+          return acc;
+        }, {});
+
+        // Formatting the response as an array of objects
+        const response = Object.values(storiesByUser);
+
+        return res.status(200).json(response);
       }
-      return res.status(200).json(results);
-    });
+    );
   });
 };
 
@@ -33,11 +66,7 @@ export const addStory = (req, res) => {
 
     const q =
       "INSERT INTO stories (`img`, `createdAt`, `username`) VALUES (?, ?, ?)";
-    const values = [
-      req.body.img,
-      moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-      userInfo.username,
-    ];
+    const values = [req.body.img, moment(Date.now()), userInfo.username];
 
     db.query(q, values, (err, data) => {
       if (err) {
