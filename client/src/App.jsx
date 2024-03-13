@@ -15,6 +15,7 @@ import Following from "./pages/followers/Following";
 import SearchPage from "./pages/searchpage/SearchPage";
 import CloseIcon from "@mui/icons-material/Close";
 import DensityMediumIcon from "@mui/icons-material/DensityMedium";
+import Navbar from "./components/navbar/Navbar";
 function App() {
   const { currentUser } = useContext(AuthContext);
   const location = useLocation();
@@ -30,11 +31,12 @@ function App() {
     const [sidebarStatus, setsidebarStatus] = useState("close");
     return (
       <div className={`theme-${darkMode ? "dark" : "light"}`}>
+        {location.pathname !== "/search" && <Navbar />}
         <div style={{ display: "flex", height: "100vh" }}>
           <div
             style={{ height: "100%" }}
             className={`${
-              window.innerWidth <= 784
+              window.innerWidth <= 960
                 ? `toggle-sidebar toggle-sidebar-${sidebarStatus}`
                 : ""
             } `}
@@ -46,7 +48,7 @@ function App() {
           </div>
           {location.pathname == "/" && <RightBar />}
         </div>
-        {window.innerWidth <= 784 && (
+        {window.innerWidth <= 960 && (
           <div
             style={{
               position: "absolute",
@@ -92,8 +94,10 @@ function App() {
         <Route path="/friends" element={<Friends />} />
         <Route path="/followers" element={<Followers />} />
         <Route path="/following" element={<Following />} />
+        <Route path="/search/:username" element={<SearchPage />} />
         <Route path="/search" element={<SearchPage />} />
       </Route>
+
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="*" element={<h1>404 page not found</h1>} />

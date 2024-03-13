@@ -11,7 +11,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
 import ProfilePic from "../../assets/profilePic.png";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import Update from "../../components/update/Update";
@@ -116,11 +116,22 @@ const Profile = () => {
                 <div className="info">
                   <div className="item">
                     <PlaceIcon />
-                    <span>{data?.city}</span>
+                    <span>
+                      <a
+                        target="_blank"
+                        href={`https://www.google.com/maps/search/${data?.city}`}
+                      >
+                        {data?.city}
+                      </a>
+                    </span>
                   </div>
                   <div className="item">
                     <LanguageIcon />
-                    <span>{data?.website}</span>
+                    <span>
+                      <a target="_blank" href={"https://" + data?.website}>
+                        {data?.website}
+                      </a>
+                    </span>
                   </div>
                 </div>
                 {rIsLoading ? (

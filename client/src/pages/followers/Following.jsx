@@ -75,7 +75,7 @@ const Following = () => {
                             <img
                               src={
                                 friend.profilePic
-                                  ? friend.profilePic
+                                  ? "/upload/" + friend.profilePic
                                   : profilePic
                               }
                               alt="Image"
@@ -105,7 +105,9 @@ const Following = () => {
                       <div className="userInfo">
                         <img
                           src={
-                            friend.profilePic ? friend.profilePic : profilePic
+                            friend.profilePic
+                              ? "/upload/" + friend.profilePic
+                              : profilePic
                           }
                           alt="Image"
                         />

@@ -67,7 +67,7 @@ const LeftBar = ({ className }) => {
               }}
               style={{ textDecoration: "none" }}
             >
-              <img src={"lg.png"} alt="" />
+              <img src={"/lg.png"} alt="" />
               <span>Logout</span>
             </Link>
           </div>

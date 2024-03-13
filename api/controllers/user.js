@@ -2,7 +2,7 @@ import { db } from "../connect.js";
 import jwt from "jsonwebtoken";
 
 export const getUsers = (req, res) => {
-  const username = req.body.username;
+  const username = req.query.username;
   const startingWord = username + "%"; // Add a wildcard % at the end to search for usernames that start with 'username'
 
   const q = "SELECT * FROM users WHERE username LIKE ?";
