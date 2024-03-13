@@ -8,11 +8,14 @@ import Spinner from "../../components/spinner/Spinner";
 import { useQuery } from "@tanstack/react-query";
 import profilePic from "../../assets/profilePic.png";
 import FollowBtn from "../../components/follow/FollowBtn";
+import Posts from "../../components/posts/Posts";
 const Followers = () => {
   const { darkMode } = useContext(DarkModeContext);
   const { currentUser } = useContext(AuthContext);
   const [serachName, setSerachName] = useState(null);
+  const [seePostOf, setSeePostOf] = useState("");
   const makeRequest = useMakeRequest();
+
   const { isLoading: r2IsLoading, data: followeData } = useQuery(
     ["relationship2"],
     () =>
@@ -66,9 +69,9 @@ const Followers = () => {
                   .filter((friend) =>
                     friend.name.toLowerCase().includes(serachName.toLowerCase())
                   )
-                  .map((friend) => {
+                  .map((friend, index) => {
                     return (
-                      <li className="list-item">
+                      <li key={index} className="list-item">
                         <div className="user">
                           <div className="userInfo">
                             <img
@@ -89,17 +92,25 @@ const Followers = () => {
                               relationshipData={relationshipData}
                               username={friend.followerUsername}
                             />
-                            <button>Watch Post</button>
+                            <button
+                              onClick={() =>
+                                setSeePostOf(friend.followerUsername)
+                              }
+                            >
+                              Watch Post
+                            </button>
                           </div>
                         </div>
                       </li>
                     );
                   })
               )
+            ) : followeData.length == 0 ? (
+              <h3>You don't have any Follower</h3>
             ) : (
-              followeData.map((friend) => {
+              followeData.map((friend, index) => {
                 return (
-                  <li className="list-item">
+                  <li key={index} className="list-item">
                     <div className="user">
                       <div className="userInfo">
                         <img
@@ -120,7 +131,11 @@ const Followers = () => {
                           relationshipData={relationshipData}
                           username={friend.followerUsername}
                         />
-                        <button>Watch Post</button>
+                        <button
+                          onClick={() => setSeePostOf(friend.followerUsername)}
+                        >
+                          Watch Post
+                        </button>
                       </div>
                     </div>
                   </li>
@@ -130,7 +145,9 @@ const Followers = () => {
           </ul>
         )}
       </div>
-      <div className="post-container">yha post dal denge</div>
+      <div className="post-container">
+        <div className="box">{seePostOf && <Posts username={seePostOf} />}</div>
+      </div>
     </div>
   );
 };

@@ -43,17 +43,19 @@ const RightBar = () => {
             <Spinner />
           ) : (
             <ul className="list">
-              {userdata.map((friend) => {
+              {userdata.map((friend, index) => {
                 if (friend.username === currentUser.username) {
                   return "";
                 }
                 return (
-                  <li className="list-item">
+                  <li key={index} className="list-item">
                     <div className="user">
                       <div className="userInfo">
                         <img
                           src={
-                            friend.profilePic ? friend.profilePic : profilePic
+                            friend.profilePic
+                              ? "/upload/" + friend.profilePic
+                              : profilePic
                           }
                           alt="Image"
                         />

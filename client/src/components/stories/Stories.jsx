@@ -52,7 +52,7 @@ const Stories = () => {
           <div style={{ position: "relative" }}>
             <Story
               imgSrc={currentUser.profilePic}
-              username={currentUser.username}
+              username={"Your Stories"}
               onClick={() => ""}
             />
             <label className="uploadIcon" htmlFor="media">
@@ -68,12 +68,43 @@ const Stories = () => {
           </div>
         ) : (
           data.map((story, index) =>
-            story.username == currentUser.username ? (
+            data.length == 1 && story.username !== currentUser.username ? (
+              <>
+                <div style={{ position: "relative" }}>
+                  <Story
+                    imgSrc={currentUser.profilePic}
+                    username={"Your Stories"}
+                    onClick={() => ""}
+                  />
+                  <label className="uploadIcon" htmlFor="media">
+                    +
+                  </label>
+                  <input
+                    type="file"
+                    style={{ display: "none" }}
+                    name="media"
+                    id="media"
+                    onChange={(e) => handleUpload(e)}
+                  />
+                </div>
+                <div>
+                  <Story
+                    key={index}
+                    imgSrc={story.profilePic}
+                    username={story.username}
+                    onClick={() => {
+                      setIntialStory(index);
+                      setOpenStories(true);
+                    }}
+                  />
+                </div>
+              </>
+            ) : story.username == currentUser.username ? (
               <div key={index} style={{ position: "relative" }}>
                 <Story
                   key={index}
                   imgSrc={story.profilePic}
-                  username={story.username}
+                  username={index == 0 ? "Your Stories" : story.username}
                   onClick={() => {
                     setIntialStory(index);
                     setOpenStories(true);

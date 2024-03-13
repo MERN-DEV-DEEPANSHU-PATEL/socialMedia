@@ -9,12 +9,15 @@ import { useQuery } from "@tanstack/react-query";
 import profilePic from "../../assets/profilePic.png";
 import FollowBtn from "../../components/follow/FollowBtn";
 import { useLocation, useParams } from "react-router-dom";
+import Posts from "../../components/posts/Posts";
 const SearchPage = () => {
   const { currentUser } = useContext(AuthContext);
   const { username } = useParams();
   const [searchName, setSearchName] = useState(username);
   const [data, setdata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [seePostOf, setSeePostOf] = useState("");
+
   const makeRequest = useMakeRequest();
 
   const location = useLocation();
@@ -73,30 +76,32 @@ const SearchPage = () => {
           <Spinner />
         ) : (
           <ul className="list">
-            {data.map((friend) => {
+            {data.map((user) => {
               return (
-                <li className="list-item">
+                <li key={user.username} className="list-item">
                   <div className="user">
                     <div className="userInfo">
                       <img
                         src={
-                          friend.profilePic
-                            ? "/upload/" + friend.profilePic
+                          user.profilePic
+                            ? "/upload/" + user.profilePic
                             : profilePic
                         }
                         alt="Image"
                       />
-                      <span className="name">{friend.name}</span>
+                      <span className="name">{user.name}</span>
                       <span className="username">
-                        &#40;{friend.username}&#41;
+                        &#40;{user.username}&#41;
                       </span>
                     </div>
                     <div className="buttons">
                       <FollowBtn
                         relationshipData={relationshipData}
-                        username={friend.username}
+                        username={user.username}
                       />
-                      <button>Watch Post</button>
+                      <button onClick={() => setSeePostOf(user.username)}>
+                        Watch Post
+                      </button>
                     </div>
                   </div>
                 </li>
@@ -105,7 +110,9 @@ const SearchPage = () => {
           </ul>
         )}
       </div>
-      <div className="big-post-container">yha post dal denge</div>
+      <div className="big-post-container">
+        <div className="box">{seePostOf && <Posts username={seePostOf} />}</div>
+      </div>
     </div>
   );
 };

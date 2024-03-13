@@ -65,7 +65,14 @@ const Post = ({ post }) => {
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <img src={"/upload/" + post.profilePic} alt="" />
+            <img
+              src={
+                post.profilePic
+                  ? "/upload/" + post.profilePic
+                  : "/profilePic.png"
+              }
+              alt=""
+            />
             <div className="details">
               <Link
                 to={`/profile/${post.username}`}

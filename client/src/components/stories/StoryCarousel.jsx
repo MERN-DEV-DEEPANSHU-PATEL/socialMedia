@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./StoryCarousel.scss";
 import CloseIcon from "@mui/icons-material/Close";
-
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import Story from "./Story";
 const StoryCarousel = ({ users, setOpenStories, initialIndex }) => {
   const [currentUserIndex, setCurrentUserIndex] = useState(initialIndex);
   const [imageIndex, setImageIndex] = useState(0);
@@ -14,6 +16,7 @@ const StoryCarousel = ({ users, setOpenStories, initialIndex }) => {
       } else {
         handleNextImage();
       }
+      console.log("change user runnig");
     }, 4000);
 
     return () => clearInterval(interval);
@@ -51,20 +54,23 @@ const StoryCarousel = ({ users, setOpenStories, initialIndex }) => {
     } else {
       setProgress(0);
       setImageIndex((index) => index + 1);
-      handleProgressBar();
     }
     // Reset progress for the next image
   };
 
-  const handleProgressBar = () => {
-    const interval = setInterval(() => {
-      setProgress((prevProgress) => prevProgress + 40);
-      if (progress === 100) {
-        clearInterval(interval);
-        handleNextImage();
+  useEffect(() => {
+    const interval = setTimeout(() => {
+      setProgress((prevProgress) => prevProgress + 2.5);
+      if (progress == 100) {
+        setProgress(0);
       }
-    }, 10);
-  };
+    }, 100);
+    return () => {
+      clearTimeout(interval);
+    };
+  }, [progress]);
+
+  console.log("progress", progress);
 
   return (
     <div className="stories-view">
@@ -72,8 +78,15 @@ const StoryCarousel = ({ users, setOpenStories, initialIndex }) => {
         <CloseIcon />
       </button>
       <div className="carousel">
+        <Story
+          imgSrc={users[currentUserIndex].profilePic}
+          username={
+            currentUserIndex == 0
+              ? "Your Stories"
+              : users[currentUserIndex].username
+          }
+        />
         {/* Displaying stories of the currently selected user */}
-        <h1>{users[currentUserIndex].username}'s Stories</h1>
         {/* Display the image carousel */}
         <div className="ontapcarousel">
           {
@@ -94,10 +107,14 @@ const StoryCarousel = ({ users, setOpenStories, initialIndex }) => {
       </div>
       <div className="navigation-buttons">
         {currentUserIndex !== 0 && (
-          <button onClick={handlePrevious}>Previous</button>
+          <button className="left" onClick={handlePrevious}>
+            <KeyboardArrowLeftIcon />
+          </button>
         )}
         {currentUserIndex !== users.length - 1 && (
-          <button onClick={handleNextUser}>Next</button>
+          <button className="right" onClick={handleNextUser}>
+            <KeyboardArrowRightIcon />
+          </button>
         )}
       </div>
     </div>

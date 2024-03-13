@@ -16,6 +16,7 @@ import SearchPage from "./pages/searchpage/SearchPage";
 import CloseIcon from "@mui/icons-material/Close";
 import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 import Navbar from "./components/navbar/Navbar";
+import Posts from "./components/posts/Posts";
 function App() {
   const { currentUser } = useContext(AuthContext);
   const location = useLocation();
@@ -96,6 +97,10 @@ function App() {
         <Route path="/following" element={<Following />} />
         <Route path="/search/:username" element={<SearchPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route
+          path="/user-post"
+          element={<Posts username={currentUser?.username} />}
+        />
       </Route>
 
       <Route path="/login" element={<Login />} />

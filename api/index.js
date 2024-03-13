@@ -14,10 +14,10 @@ import cors from "cors";
 import multer from "multer";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
-
+import { deleteOldStories } from "./controllers/story.js";
 import { db } from "./connect.js";
 import { getSuggestions } from "./controllers/suggestions.js";
-
+import moment from "moment";
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
@@ -73,8 +73,8 @@ app.post("/api/stories", upload2.single("file"), (req, res) => {
     if (err) return res.status(403).json("Token is not valid!");
     const q =
       "INSERT INTO stories (`media`, `username`,`createdAt`) VALUES (?, ?, ?)";
-    const date = new Date();
-    const values = [filename, userInfo.username, date.getTime()];
+
+    const values = [filename, userInfo.username, moment().toDate()];
 
     db.query(q, values, (err, data) => {
       if (err) {
@@ -111,3 +111,7 @@ db.connect((err) => {
 app.listen(8800, () => {
   console.log("Server Started API working!");
 });
+
+setInterval(() => {
+  deleteOldStories();
+}, 1000 * 60 * 60 * 24);
