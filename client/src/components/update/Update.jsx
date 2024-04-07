@@ -11,7 +11,6 @@ const Update = ({ setOpenUpdate, user }) => {
   const { setCurrentUser } = useContext(AuthContext);
   const [profile, setProfile] = useState(null);
   const makeRequest = useMakeRequest();
-  console.log("user", user);
   const [texts, setTexts] = useState({
     email: user.email,
     password: user.password,
@@ -21,7 +20,6 @@ const Update = ({ setOpenUpdate, user }) => {
   });
 
   const upload = async (file) => {
-    console.log(file);
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -43,8 +41,6 @@ const Update = ({ setOpenUpdate, user }) => {
       return makeRequest.put("/users", user).then((res) =>
         res.status === 200
           ? setCurrentUser((prev) => {
-              console.log("...prev", prev);
-              console.log("user", user);
               return { ...prev, ...user };
             })
           : ""

@@ -17,9 +17,9 @@
 
       .profilePic {
         width: 200px;
+        object-fit: contain;
         height: 200px;
         border-radius: 50%;
-        object-fit: cover;
         position: absolute;
         left: 0;
         right: 0;

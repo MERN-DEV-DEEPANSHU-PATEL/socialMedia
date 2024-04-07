@@ -12,13 +12,14 @@ const Posts = ({ username }) => {
       .get(
         location.pathname == "/user-post"
           ? `/posts/self?username=${username}`
+          : location.pathname.includes("/search")
+          ? `/posts/self/other?username=${username}`
           : `/posts?username=${username}`
       )
       .then((res) => {
         return res.data;
       })
   );
-  console.log(data);
   return (
     <div className="posts">
       {error ? (

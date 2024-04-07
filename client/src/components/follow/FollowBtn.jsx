@@ -22,9 +22,6 @@ const FollowBtn = ({ relationshipData, username }) => {
       },
     }
   );
-  console.log(relationshipData);
-  console.log(username);
-  console.log(relationshipData.includes(username));
 
   const handleFollow = (e) => {
     e.stopPropagation();

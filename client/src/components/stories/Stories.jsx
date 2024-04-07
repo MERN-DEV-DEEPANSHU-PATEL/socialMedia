@@ -33,14 +33,11 @@ const Stories = () => {
   );
 
   const handleUpload = (e) => {
-    console.log(e.target.files[0]);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
     mutation.mutate(formData);
   };
 
-  //TODO Add story using react-query mutations and use upload function.
-  console.log(data);
   return (
     <div className="stories">
       <div className="slider">
@@ -70,7 +67,7 @@ const Stories = () => {
           data.map((story, index) =>
             data.length == 1 && story.username !== currentUser.username ? (
               <>
-                <div style={{ position: "relative" }}>
+                <div key={"index"} style={{ position: "relative" }}>
                   <Story
                     imgSrc={currentUser.profilePic}
                     username={"Your Stories"}
@@ -89,7 +86,7 @@ const Stories = () => {
                 </div>
                 <div>
                   <Story
-                    key={index}
+                    key={"uniqe"}
                     imgSrc={story.profilePic}
                     username={story.username}
                     onClick={() => {
@@ -102,7 +99,6 @@ const Stories = () => {
             ) : story.username == currentUser.username ? (
               <div key={index} style={{ position: "relative" }}>
                 <Story
-                  key={index}
                   imgSrc={story.profilePic}
                   username={index == 0 ? "Your Stories" : story.username}
                   onClick={() => {
@@ -122,9 +118,8 @@ const Stories = () => {
                 />
               </div>
             ) : (
-              <div>
+              <div key={index}>
                 <Story
-                  key={index}
                   imgSrc={story.profilePic}
                   username={story.username}
                   onClick={() => {

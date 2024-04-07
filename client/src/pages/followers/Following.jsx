@@ -29,7 +29,6 @@ const Following = () => {
         })
   );
 
-  console.log("followingData", followingData);
   const { isLoading: rIsLoading, data: relationshipData } = useQuery(
     ["relationship"],
     () =>

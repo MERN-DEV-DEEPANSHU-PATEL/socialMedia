@@ -41,7 +41,6 @@ const Post = ({ post }) => {
   );
   const deleteMutation = useMutation(
     (postId) => {
-      console.log("Delete Proceedskn", postId);
       return makeRequest.delete("/posts/" + postId);
     },
     {

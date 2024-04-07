@@ -8,6 +8,10 @@
     .list-container {
       // height: 100vh;
       overflow-y: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      margin-right: 1rem;
       position: relative;
       flex: 4;
       .serach-in-follower {
@@ -115,6 +119,10 @@
     }
 
     .big-post-container {
+      overflow-y: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
       flex: 4;
       @include mobile {
         display: none;

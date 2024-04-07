@@ -36,7 +36,9 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
-    getSearchUser();
+    if (searchName?.length > 0) {
+      getSearchUser();
+    }
   }, [searchName]);
 
   const { isLoading: rIsLoading, data: relationshipData } = useQuery(
@@ -52,7 +54,6 @@ const SearchPage = () => {
         })
   );
 
-  console.log("search", data);
   return (
     <div className="search-container">
       <div className="list-container">

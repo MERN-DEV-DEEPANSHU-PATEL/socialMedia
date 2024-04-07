@@ -30,7 +30,6 @@ const Profile = () => {
     makeRequest
       .get("/users/find/" + username)
       .then((res) => {
-        console.log(res);
         return res.data;
       })
       .catch((error) => {
@@ -72,8 +71,7 @@ const Profile = () => {
   };
   const urlCoverPic = data?.coverPic ? data.coverPic : "";
   const urlProfilePic = data?.profilePic ? data.profilePic : "";
-  console.log(urlCoverPic);
-  console.log(data);
+
   return (
     <div className="profile">
       {isLoading ? (

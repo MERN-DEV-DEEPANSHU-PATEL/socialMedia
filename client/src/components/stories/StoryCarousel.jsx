@@ -16,7 +16,6 @@ const StoryCarousel = ({ users, setOpenStories, initialIndex }) => {
       } else {
         handleNextImage();
       }
-      console.log("change user runnig");
     }, 4000);
 
     return () => clearInterval(interval);
@@ -69,8 +68,6 @@ const StoryCarousel = ({ users, setOpenStories, initialIndex }) => {
       clearTimeout(interval);
     };
   }, [progress]);
-
-  console.log("progress", progress);
 
   return (
     <div className="stories-view">

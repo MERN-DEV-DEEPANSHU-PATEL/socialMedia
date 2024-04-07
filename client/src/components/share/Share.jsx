@@ -14,10 +14,8 @@ const Share = () => {
   const upload = async () => {
     try {
       const formData = new FormData();
-      console.log(formData);
       formData.append("file", file);
       const res = await makeRequest.post("/upload", formData);
-      console.log(res);
       return res.data;
     } catch (err) {
       console.log(err);

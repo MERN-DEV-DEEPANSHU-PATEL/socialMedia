@@ -1,6 +1,7 @@
 import { db } from "../connect.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { sendOtp, verifyOtp } from "../utils/otp.js";
 
 export const register = (req, res) => {
   const { username, password, email, name } = req.body; // object destructuring
@@ -126,4 +127,76 @@ export const logout = (req, res) => {
     })
     .status(200)
     .json("User has been logged out.");
+};
+
+export const VerifyUserSendOtp = async (req, res) => {
+  try {
+    console.log("start otp");
+    db.query(
+      "SELECT * FROM users WHERE email = ?",
+      [req.query.email],
+      async (err, results) => {
+        if (err) {
+          console.error("Error fetching comments:", err);
+          return res.status(500).json(err);
+        }
+        if (results.length > 0) {
+          let user = results[0];
+          const status = await sendOtp(user.email);
+          if (status.isSuccess) {
+            return res.status(200).send(status.msg);
+          } else {
+            console.log("OTP Sending failed");
+            return res.status(500).send(status.msg);
+          }
+        } else {
+          return res.status(400).json("User Not Found");
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const VerifyUserVerifyOtp = async (req, res) => {
+  try {
+    db.query(
+      "SELECT * FROM users WHERE email = ?",
+      [req.query.email],
+      async (err, results) => {
+        if (err) {
+          console.error("Error fetching comments:", err);
+          return res.status(500).json(err);
+        }
+        if (results.length > 0) {
+          let user = results[0];
+          const status = await verifyOtp(req.query.otp, user.email);
+          if (status.isVerify) {
+            db.query("UPDATE users SET isVerified = ? WHERE email = ?", [
+              true,
+              user.email,
+            ]);
+            console.log("end otp");
+            return res.status(200)
+              .send(`<div style="width:100%;height:100%;display:flex;justify-content:center;align-items:center" ><div style="background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.9); text-align: center;">
+      <h1 style="color: #333; margin-bottom: 20px;font-size: 5vw;">Email Verified!</h1>
+      <p style="color: #666; line-height: 1.5; margin-bottom: 30px;">Thank you for verifying your email address. Your account is now active, and you can start exploring Dribbble.</p>
+      <a href=${process.env.CLIENT_URL} class="btn-start" style="display: inline-block; background-color: #e73655; color: #fff; text-decoration: none;padding: 4vw 7vw;
+      font-size: 4vw; border-radius: 4px; transition: background-color 0.3s ease;">Get Started</a>
+    </div></div>`);
+          } else {
+            console.log("OTP verification failed");
+            return res.status(400).send(status.msg);
+          }
+        } else {
+          return res.status(400).json("User Not Found");
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error verifying OTP:", error);
+    return res.status(500).json({ error: error.message });
+  }
 };

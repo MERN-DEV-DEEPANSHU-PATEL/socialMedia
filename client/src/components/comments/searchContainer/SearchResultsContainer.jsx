@@ -23,7 +23,6 @@ const SearchResultsContainer = ({ data, setIsSearch }) => {
         })
   );
 
-  console.log(relationshipData);
   return (
     <div className="search-container">
       <div className="item">

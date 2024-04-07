@@ -10,15 +10,16 @@ import "./register.scss";
 import axios from "axios";
 import Logo from "../../components/Logo";
 import { toast } from "react-toastify";
+import MailVerify from "../../components/mailVerify/MailVerify";
 
 const Register = () => {
-  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     username: "",
     email: "",
     password: "",
     name: "",
   });
+  const [isRegisterSuccessful, setIsRegisterSuccessful] = useState(false);
   const [err, setErr] = useState(null);
 
   const handleChange = (e) => {
@@ -32,14 +33,18 @@ const Register = () => {
         "http://localhost:8800/api/auth/register",
         inputs
       );
-      toast.success("Register Successful");
-      navigate("/login");
+
+      // setIsRegisterSuccessful(true);
+      // await axios.get(
+      //   `http://localhost:8800/api/auth/getotp?email=${inputs.email}`
+      // );
+      // toast.success("Register Successful");
     } catch (err) {
       toast.error(err.response.data.msg);
     }
   };
 
-  return (
+  return !isRegisterSuccessful ? (
     <div className="main-container">
       <video className="video" src="/smv.mp4" autoPlay autoFocus></video>
       <div className="register">
@@ -92,6 +97,8 @@ const Register = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <MailVerify email={inputs.email} />
   );
 };
 
