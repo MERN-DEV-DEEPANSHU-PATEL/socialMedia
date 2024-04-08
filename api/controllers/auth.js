@@ -167,25 +167,35 @@ export const VerifyUserVerifyOtp = async (req, res) => {
       [req.query.email],
       async (err, results) => {
         if (err) {
-          console.error("Error fetching comments:", err);
+          console.error("Error fetching user:", err);
           return res.status(500).json(err);
         }
         if (results.length > 0) {
           let user = results[0];
           const status = await verifyOtp(req.query.otp, user.email);
           if (status.isVerify) {
-            db.query("UPDATE users SET isVerified = ? WHERE email = ?", [
-              true,
-              user.email,
-            ]);
-            console.log("end otp");
-            return res.status(200)
-              .send(`<div style="width:100%;height:100%;display:flex;justify-content:center;align-items:center" ><div style="background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.9); text-align: center;">
-      <h1 style="color: #333; margin-bottom: 20px;font-size: 5vw;">Email Verified!</h1>
-      <p style="color: #666; line-height: 1.5; margin-bottom: 30px;">Thank you for verifying your email address. Your account is now active, and you can start exploring Dribbble.</p>
-      <a href=${process.env.CLIENT_URL} class="btn-start" style="display: inline-block; background-color: #e73655; color: #fff; text-decoration: none;padding: 4vw 7vw;
-      font-size: 4vw; border-radius: 4px; transition: background-color 0.3s ease;">Get Started</a>
-    </div></div>`);
+            // Update user's verification status in the database
+            db.query(
+              "UPDATE users SET isVerified = ? WHERE email = ?",
+              [1, user.email],
+              (updateErr, updateResults) => {
+                if (updateErr) {
+                  console.error(
+                    "Error updating user verification status:",
+                    updateErr
+                  );
+                  return res.status(500).json(updateErr);
+                }
+                console.log("User verification status updated successfully");
+                return res.status(200)
+                  .send(`<div style="width:100%;height:100%;display:flex;justify-content:center;align-items:center" ><div style="background-color: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.9); text-align: center;">
+              <h1 style="color: #333; margin-bottom: 20px;font-size: 5vw;">Email Verified!</h1>
+              <p style="color: #666; line-height: 1.5; margin-bottom: 30px;">Thank you for verifying your email address. Your account is now active, and you can start exploring Dribbble.</p>
+              <a href=${process.env.CLIENT_URL} class="btn-start" style="display: inline-block; background-color: #e73655; color: #fff; text-decoration: none;padding: 4vw 7vw;
+              font-size: 4vw; border-radius: 4px; transition: background-color 0.3s ease;">Get Started</a>
+            </div></div>`);
+              }
+            );
           } else {
             console.log("OTP verification failed");
             return res.status(400).send(status.msg);

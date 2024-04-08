@@ -33,12 +33,11 @@ const Register = () => {
         "http://localhost:8800/api/auth/register",
         inputs
       );
-
-      // setIsRegisterSuccessful(true);
-      // await axios.get(
-      //   `http://localhost:8800/api/auth/getotp?email=${inputs.email}`
-      // );
-      // toast.success("Register Successful");
+      await axios.get(
+        `http://localhost:8800/api/auth/getotp?email=${inputs.email}`
+      );
+      setIsRegisterSuccessful(true);
+      toast.success("Register Successful");
     } catch (err) {
       toast.error(err.response.data.msg);
     }

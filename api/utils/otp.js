@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
-
+import dotenv from "dotenv";
+dotenv.config();
 const otpStore = new Map(); // save in memory data with key-value  pair
 
 function generateOTP() {

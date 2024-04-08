@@ -1,6 +1,7 @@
 import express from "express";
 const app = express();
-
+import dotenv from "dotenv";
+dotenv.config();
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import friendsRoutes from "./routes/friends.js";

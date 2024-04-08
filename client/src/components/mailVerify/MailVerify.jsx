@@ -1,27 +1,39 @@
 // MailVerify.jsx
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MailVerify.scss";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const MailVerify = ({ email }) => {
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState(["", "", "", ""]);
   const navigate = useNavigate();
+  const inputRefs = useRef([]);
 
-  const handleOtpChange = (event) => {
+  const handleOtpChange = (event, index) => {
     const { value } = event.target;
-    if (value.length <= 4) {
-      setOtp(value);
+    if (value.length <= 1) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      // Auto-focus on the next input field
+      if (value.length === 1 && index < 3) {
+        inputRefs.current[index + 1].focus();
+      }
     }
   };
 
   const handleVerifyOtp = async () => {
     try {
       await axios.get(
-        `http://localhost:8800/api/auth/verifymail?email=${inputs.email}&otp=${otp}`
+        `http://localhost:8800/api/auth/verifymail?email=${email}&otp=${otp.join(
+          ""
+        )}`
       );
-      toast.success("Email verifyed");
-      console.log("Verifying OTP:", otp);
+      toast.success("Email verified Now Please Login");
+      navigate("/login");
+      console.log("Verifying OTP:", otp.join(""));
     } catch (error) {
       console.log(error);
     }
@@ -34,14 +46,15 @@ const MailVerify = ({ email }) => {
         Please enter the 4-digit OTP sent to your email address.
       </p>
       <div className="otp-input-container">
-        {Array.from({ length: 4 }).map((_, index) => (
+        {otp.map((digit, index) => (
           <input
             key={index}
             type="text"
             maxLength="1"
             className="otp-input"
-            value={otp[index] || ""}
-            onChange={handleOtpChange}
+            value={digit}
+            onChange={(e) => handleOtpChange(e, index)}
+            ref={(ref) => (inputRefs.current[index] = ref)}
           />
         ))}
       </div>
